@@ -19,22 +19,18 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      // Check if the user is authenticated and has a token
-      const token = user?.token;  // Get the token from context or local storage
-
-      const { data } = await axios.get(`${url}/api/orders`, {
-        headers: {
-          Authorization: `Bearer ${token}`,  // Send token in the Authorization header
-        },
-        withCredentials: true,  // Allow cookies if needed
+      const { data } = await axios.get("https://inventorymanagementsystem-backend-z88f.onrender.com/api/orders", {
+        withCredentials: true, // ✅ Required for cookies
       });
-
+  
       setOrders(data);
+      setFilteredOrders(data); 
     } catch (error) {
       console.error("Error fetching orders:", error);
       toast.error("Failed to fetch orders. Please try again.");
     }
   };
+  
   
 
   const fetchInventoryItems = async () => {
