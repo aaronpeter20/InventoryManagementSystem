@@ -15,7 +15,7 @@ const Orders = () => {
   const [inventoryItems, setInventoryItems] = useState([]); 
   const [showForm, setShowForm] = useState(false);
   const [filteredOrders, setFilteredOrders] = useState([]);
-  const { isEmployee, isManager } = useAuth();
+  const { user,isEmployee, isManager } = useAuth();
 
   const fetchOrders = async () => {
     try {
