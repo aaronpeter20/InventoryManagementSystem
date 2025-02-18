@@ -19,14 +19,17 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const { data } = await axios.get(`${url}/api/orders`);
+      const { data } = await axios.get(`${url}/api/orders`, {
+        withCredentials: true,
+      });
       setOrders(data);
-      setFilteredOrders(data); 
+      setFilteredOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
-      toast.error("Failed to fetch orders. Please try again.");
+      toast.error(error.response?.data?.message || "Failed to fetch orders. Please try again.");
     }
   };
+  
 
   const fetchInventoryItems = async () => {
     try {
