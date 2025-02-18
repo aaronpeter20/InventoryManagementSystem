@@ -19,14 +19,20 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
+      // Check if the user is authenticated and has a token
+      const token = user?.token;  // Get the token from context or local storage
+
       const { data } = await axios.get(`${url}/api/orders`, {
-        withCredentials: true,
+        headers: {
+          Authorization: `Bearer ${token}`,  // Send token in the Authorization header
+        },
+        withCredentials: true,  // Allow cookies if needed
       });
+
       setOrders(data);
-      setFilteredOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
-      toast.error(error.response?.data?.message || "Failed to fetch orders. Please try again.");
+      toast.error("Failed to fetch orders. Please try again.");
     }
   };
   
