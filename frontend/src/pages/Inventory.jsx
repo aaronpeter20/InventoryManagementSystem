@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faSearch } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 
+const url = "https://inventorymanagementsystem-backend-z88f.onrender.com";
+
 const Inventory = () => {
   const [inventory, setInventory] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
@@ -22,7 +24,7 @@ const Inventory = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get("/api/inventory");
+      const { data } = await axios.get(`${url}/api/inventory`);
       setInventory(data);
     } catch (error) {
       setError("Failed to fetch inventory. Please try again.");
@@ -34,7 +36,7 @@ const Inventory = () => {
 
   const fetchSuppliers = async () => {
     try {
-      const { data } = await axios.get("/api/suppliers");
+      const { data } = await axios.get(`${url}/api/suppliers`);
       setSuppliers(data);
     } catch (error) {
       console.error("Error fetching suppliers:", error);
@@ -43,7 +45,7 @@ const Inventory = () => {
 
   const handleAddItem = async (formData) => {
     try {
-      await axios.post("/api/inventory", formData);
+      await axios.post(`${url}/api/inventory`, formData);
       fetchInventory();
       setShowForm(false);
       toast.success("Item added successfully!");
@@ -55,7 +57,7 @@ const Inventory = () => {
 
   const handleEditItem = async (id, updatedData) => {
     try {
-      await axios.put(`/api/inventory/${id}`, updatedData);
+      await axios.put(`${url}/api/inventory/${id}`, updatedData);
       fetchInventory();
       toast.success("Item updated successfully!");
       setShowForm(false);
@@ -67,7 +69,7 @@ const Inventory = () => {
 
   const handleDeleteItem = async (id) => {
     try {
-      await axios.delete(`/api/inventory/${id}`);
+      await axios.delete(`${url}/api/inventory/${id}`);
       fetchInventory();
       toast.success("Item deleted successfully!");
     } catch (error) {

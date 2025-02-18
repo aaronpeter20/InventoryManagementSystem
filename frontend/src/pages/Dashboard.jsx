@@ -13,6 +13,8 @@ import {
   faUsers,
 } from "@fortawesome/free-solid-svg-icons"; 
 
+const url = "https://inventorymanagementsystem-backend-z88f.onrender.com";
+
 const Dashboard = () => {
   const { user, isAdmin } = useAuth();
   const [metrics, setMetrics] = useState({
@@ -24,7 +26,7 @@ const Dashboard = () => {
   useEffect(() => {
     const fetchMetrics = async () => {
       try {
-        const { data } = await axios.get("/api/dashboard/metrics");
+        const { data } = await axios.get(`${url}/api/dashboard/metrics`);
         setMetrics(data);
       } catch (error) {
         console.error("Error fetching metrics:", error);

@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash,faTimes } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 
+const url = "https://inventorymanagementsystem-backend-z88f.onrender.com";
+
 const Users = () => {
   const [users, setUsers] = useState([]);
   const [showForm, setShowForm] = useState(false);
@@ -16,7 +18,7 @@ const Users = () => {
 
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get("/api/users");
+      const { data } = await axios.get(`${url}/api/users`);
       setUsers(data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -26,7 +28,7 @@ const Users = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`/api/users/${userId}`);
+      await axios.delete(`${url}/api/users/${userId}`);
       fetchUsers(); 
       toast.success("User deleted successfully!");
     } catch (error) {
@@ -37,7 +39,7 @@ const Users = () => {
 
   const handleUpdateUserRole = async (userId, updatedData) => {
     try {
-      await axios.put(`/api/users/${userId}`, updatedData);
+      await axios.put(`${url}/api/users/${userId}`, updatedData);
       fetchUsers(); 
       toast.success("User role updated successfully!");
       setShowForm(false); 

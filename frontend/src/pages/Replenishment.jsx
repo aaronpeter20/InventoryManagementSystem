@@ -8,6 +8,8 @@ import { motion } from "framer-motion";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTimes } from "@fortawesome/free-solid-svg-icons";
 
+const url = "https://inventorymanagementsystem-backend-z88f.onrender.com";
+
 const Replenishment = () => {
   const [inventory, setInventory] = useState([]);
   const [replenishments, setReplenishments] = useState([]);
@@ -21,7 +23,7 @@ const Replenishment = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get("/api/inventory");
+      const { data } = await axios.get(`${url}/api/inventory`);
       setInventory(data);
     } catch (error) {
       setError("Failed to fetch inventory. Please try again.");
@@ -33,7 +35,7 @@ const Replenishment = () => {
 
   const fetchReplenishments = async () => {
     try {
-      const { data } = await axios.get("/api/replenishment");
+      const { data } = await axios.get(`${url}/api/replenishment`);
       setReplenishments(data);
       setFilteredRequests(data); 
     } catch (error) {
@@ -44,7 +46,7 @@ const Replenishment = () => {
   const handleAddRequest = async (formData) => {
     try {
       console.log("Submitting Replenishment Request:", formData); 
-      await axios.post("/api/replenishment", formData);
+      await axios.post(`${url}/api/replenishment`, formData);
       fetchReplenishments();
       setShowForm(false);
       toast.success("Replenishment request submitted successfully!");
@@ -56,7 +58,7 @@ const Replenishment = () => {
 
   const handleApproveRequest = async (id) => {
     try {
-      await axios.put(`/api/replenishment/${id}`);
+      await axios.put(`${url}/api/replenishment/${id}`);
       fetchReplenishments();
       toast.success("Replenishment request approved!");
     } catch (error) {

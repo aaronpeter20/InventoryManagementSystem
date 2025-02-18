@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faTrash, faCaretDown,faTimes } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 
+const url = "https://inventorymanagementsystem-backend-z88f.onrender.com";
+
 const Orders = () => {
   const [orders, setOrders] = useState([]);
   const [inventoryItems, setInventoryItems] = useState([]); 
@@ -17,7 +19,7 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const { data } = await axios.get("/api/orders");
+      const { data } = await axios.get(`${url}/api/orders`);
       setOrders(data);
       setFilteredOrders(data); 
     } catch (error) {
@@ -28,7 +30,7 @@ const Orders = () => {
 
   const fetchInventoryItems = async () => {
     try {
-      const { data } = await axios.get("/api/inventory");
+      const { data } = await axios.get(`${url}/api/inventory`);
       setInventoryItems(data);
     } catch (error) {
       console.error("Error fetching inventory items:", error);
@@ -37,7 +39,7 @@ const Orders = () => {
 
   const handleCreateOrder = async (formData) => {
     try {
-      await axios.post("/api/orders", formData);
+      await axios.post(`${url}/api/orders`, formData);
       fetchOrders();
       setShowForm(false);
       toast.success("Order created successfully!");
@@ -49,7 +51,7 @@ const Orders = () => {
 
   const handleUpdateOrderStatus = async (orderId, status) => {
     try {
-      const response = await axios.put(`/api/orders/${orderId}`, { status });
+      const response = await axios.put(`${url}/api/orders/${orderId}`, { status });
 
       if (response.data.error) {
         window.alert("⚠️ Out of stock! Cannot approve this order."); 
@@ -68,7 +70,7 @@ const Orders = () => {
 
   const handleDeleteOrder = async (orderId) => {
     try {
-      await axios.delete(`/api/orders/${orderId}`);
+      await axios.delete(`${url}/api/orders/${orderId}`);
       fetchOrders();
       toast.success("Order deleted successfully!");
     } catch (error) {

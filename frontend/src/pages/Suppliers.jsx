@@ -8,6 +8,8 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faEdit, faTrash, faSearch, faTimes } from "@fortawesome/free-solid-svg-icons";
 import { motion } from "framer-motion";
 
+const url = "https://inventorymanagementsystem-backend-z88f.onrender.com";
+
 const Suppliers = () => {
   const [suppliers, setSuppliers] = useState([]);
   const [searchQuery, setSearchQuery] = useState(""); 
@@ -21,7 +23,7 @@ const Suppliers = () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get("/api/suppliers");
+      const { data } = await axios.get(`${url}/api/suppliers`);
       setSuppliers(data);
     } catch (error) {
       setError("Failed to fetch suppliers. Please try again.");
@@ -33,7 +35,7 @@ const Suppliers = () => {
 
   const handleAddSupplier = async (formData) => {
     try {
-      await axios.post("/api/suppliers", formData);
+      await axios.post(`${url}/api/suppliers`, formData);
       fetchSuppliers();
       setShowForm(false);
       toast.success("Supplier added successfully!");
@@ -44,7 +46,7 @@ const Suppliers = () => {
 
   const handleEditSupplier = async (id, updatedData) => {
     try {
-      await axios.put(`/api/suppliers/${id}`, updatedData);
+      await axios.put(`${url}/api/suppliers/${id}`, updatedData);
       fetchSuppliers();
       toast.success("Supplier updated successfully!");
       setShowForm(false);
@@ -55,7 +57,7 @@ const Suppliers = () => {
 
   const handleDeleteSupplier = async (id) => {
     try {
-      await axios.delete(`/api/suppliers/${id}`);
+      await axios.delete(`${url}/api/suppliers/${id}`);
       fetchSuppliers();
       toast.success("Supplier deleted successfully!");
     } catch (error) {
