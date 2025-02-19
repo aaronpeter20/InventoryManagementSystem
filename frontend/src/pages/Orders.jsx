@@ -19,10 +19,10 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem("token");
+      const token = localStorage.getItem("token"); // Get the token from localStorage
       const { data } = await axios.get(`${url}/api/orders`, {
         headers: {
-          Authorization: `Bearer ${token}`,
+          Authorization: `Bearer ${token}`, // Send the token in the Authorization header
         },
       });
   
