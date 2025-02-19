@@ -15,13 +15,15 @@ export const AuthProvider = ({ children }) => {
     const { data } = await axios.post(`${url}/api/auth/login`, { email, password });
     setUser(data);
     localStorage.setItem("user", JSON.stringify(data));
+    localStorage.setItem("token", data.token); 
   };
-
+  
   const signup = async (name, email, password, role) => {
     try {
       const { data } = await axios.post(`${url}/api/auth/signup`, { name, email, password, role });
       setUser(data);
-      localStorage.setItem("user", JSON.stringify(data)); 
+      localStorage.setItem("user", JSON.stringify(data));
+      localStorage.setItem("token", data.token); 
     } catch (error) {
       console.error("Signup failed:", error.response?.data || error.message);
       throw new Error(error.response?.data?.message || "Failed to sign up");

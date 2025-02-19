@@ -19,12 +19,15 @@ const Orders = () => {
 
   const fetchOrders = async () => {
     try {
-      const { data } = await axios.get("https://inventorymanagementsystem-backend-z88f.onrender.com/api/orders", {
-        withCredentials: true, // ✅ Required for cookies
+      const token = localStorage.getItem("token");
+      const { data } = await axios.get(`${url}/api/orders`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       });
   
       setOrders(data);
-      setFilteredOrders(data); 
+      setFilteredOrders(data);
     } catch (error) {
       console.error("Error fetching orders:", error);
       toast.error("Failed to fetch orders. Please try again.");
