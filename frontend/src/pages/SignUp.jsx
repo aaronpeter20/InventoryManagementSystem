@@ -41,7 +41,7 @@ const Signup = () => {
     <div
       className="flex items-center justify-center min-h-screen bg-cover bg-center"
       style={{
-        backgroundImage: "url('https://www.transparenttextures.com/patterns/soft-circle-scales.png')", // Update with your actual image path
+        backgroundImage: "url('https://www.transparenttextures.com/patterns/soft-circle-scales.png')", 
       }}
     >
       <div className="w-full max-w-md p-8 space-y-6 bg-white/90 backdrop-blur-md rounded-lg shadow-2xl transform transition-all duration-300 hover:scale-105">

@@ -20,17 +20,15 @@ const Inventory = () => {
   const [error, setError] = useState(null);
   const { isAdmin, isManager } = useAuth();
 
-  // Store the token in a state variable
   const [token, setToken] = useState(localStorage.getItem("token"));
 
-  // Fetch inventory items
   const fetchInventory = async () => {
     setLoading(true);
     setError(null);
     try {
       const { data } = await axios.get(`${url}/api/inventory`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Use the token from state
+          Authorization: `Bearer ${token}`, 
         },
       });
       setInventory(data);
@@ -42,12 +40,11 @@ const Inventory = () => {
     }
   };
 
-  // Fetch suppliers
   const fetchSuppliers = async () => {
     try {
       const { data } = await axios.get(`${url}/api/suppliers`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Use the token from state
+          Authorization: `Bearer ${token}`, 
         },
       });
       setSuppliers(data);
@@ -56,15 +53,14 @@ const Inventory = () => {
     }
   };
 
-  // Add a new inventory item
   const handleAddItem = async (formData) => {
     try {
       await axios.post(`${url}/api/inventory`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`, // Use the token from state
+          Authorization: `Bearer ${token}`, 
         },
       });
-      fetchInventory(); // Refresh the inventory list
+      fetchInventory(); 
       setShowForm(false);
       toast.success("Item added successfully!");
     } catch (error) {
@@ -73,15 +69,14 @@ const Inventory = () => {
     }
   };
 
-  // Edit an inventory item
   const handleEditItem = async (id, updatedData) => {
     try {
       await axios.put(`${url}/api/inventory/${id}`, updatedData, {
         headers: {
-          Authorization: `Bearer ${token}`, // Use the token from state
+          Authorization: `Bearer ${token}`, 
         },
       });
-      fetchInventory(); // Refresh the inventory list
+      fetchInventory(); 
       toast.success("Item updated successfully!");
       setShowForm(false);
     } catch (error) {
@@ -90,15 +85,14 @@ const Inventory = () => {
     }
   };
 
-  // Delete an inventory item
   const handleDeleteItem = async (id) => {
     try {
       await axios.delete(`${url}/api/inventory/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Use the token from state
+          Authorization: `Bearer ${token}`, 
         },
       });
-      fetchInventory(); // Refresh the inventory list
+      fetchInventory(); 
       toast.success("Item deleted successfully!");
     } catch (error) {
       console.error("Error deleting item:", error.response?.data);
@@ -106,16 +100,14 @@ const Inventory = () => {
     }
   };
 
-  // Filter inventory items based on search query
   const filteredInventory = inventory.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
-  // Fetch inventory and suppliers on component mount
   useEffect(() => {
     fetchInventory();
     fetchSuppliers();
-  }, [token]); // Re-fetch if the token changes
+  }, [token]); 
 
   return (
     <div
@@ -188,7 +180,6 @@ const Inventory = () => {
                 {(isAdmin() || isManager()) && (
                   <td className="p-3">
                     <div className="flex space-x-2">
-                      {/* Edit button */}
                       <button
                         onClick={() => {
                           setShowForm({ mode: "edit", item });
@@ -198,7 +189,6 @@ const Inventory = () => {
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
 
-                      {/* Delete button */}
                       <button
                         onClick={() => handleDeleteItem(item._id)}
                         className="p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
@@ -214,7 +204,6 @@ const Inventory = () => {
         </table>
       </motion.div>
 
-      {/* Add Item button */}
       {(isAdmin() || isManager()) && (
         <motion.button
           initial={{ opacity: 0, y: 20 }}
@@ -227,7 +216,6 @@ const Inventory = () => {
         </motion.button>
       )}
 
-      {/* Inventory form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <motion.div

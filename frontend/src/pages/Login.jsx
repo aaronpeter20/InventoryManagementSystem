@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../context/AuthContext.jsx";
-import { useNavigate } from "react-router-dom";
+import { Link,useNavigate } from "react-router-dom";
 
 const Login = () => {
   const [email, setEmail] = useState("");
@@ -34,7 +34,7 @@ const Login = () => {
   return (
     <div 
       className="flex items-center justify-center min-h-screen bg-cover bg-center"
-      style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/soft-circle-scales.png')" }} // Replace with your image path
+      style={{ backgroundImage: "url('https://www.transparenttextures.com/patterns/soft-circle-scales.png')" }}
     >
       <div className="w-full max-w-md p-8 space-y-6 bg-white bg-opacity-90 rounded-lg shadow-2xl transform transition-all duration-300 hover:scale-105">
         <div className="text-center">
@@ -113,12 +113,12 @@ const Login = () => {
         </form>
 
         <div className="text-center">
-          <p className="text-sm text-gray-600">
-            Don't have an account?{" "}
-            <a href="/signup" className="text-blue-600 hover:underline">
-              Sign up
-            </a>
-          </p>
+        <p className="text-sm text-gray-600">
+        Don't have an account?{" "}
+        <Link to="/signup" className="text-blue-600 hover:underline">
+        Sign up
+        </Link>
+        </p>
         </div>
       </div>
     </div>
