@@ -16,9 +16,15 @@ const Users = () => {
   const [selectedUser, setSelectedUser] = useState(null);
   const { isAdmin } = useAuth();
 
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
   const fetchUsers = async () => {
     try {
-      const { data } = await axios.get(`${url}/api/users`);
+      const { data } = await axios.get(`${url}/api/users`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       setUsers(data);
     } catch (error) {
       console.error("Error fetching users:", error);
@@ -28,7 +34,11 @@ const Users = () => {
 
   const handleDeleteUser = async (userId) => {
     try {
-      await axios.delete(`${url}/api/users/${userId}`);
+      await axios.delete(`${url}/api/users/${userId}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchUsers(); 
       toast.success("User deleted successfully!");
     } catch (error) {
@@ -39,7 +49,11 @@ const Users = () => {
 
   const handleUpdateUserRole = async (userId, updatedData) => {
     try {
-      await axios.put(`${url}/api/users/${userId}`, updatedData);
+      await axios.put(`${url}/api/users/${userId}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchUsers(); 
       toast.success("User role updated successfully!");
       setShowForm(false); 

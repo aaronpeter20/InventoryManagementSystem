@@ -19,11 +19,17 @@ const Replenishment = () => {
   const [filteredRequests, setFilteredRequests] = useState([]); 
   const { isAdmin, isManager } = useAuth();
 
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
   const fetchInventory = async () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get(`${url}/api/inventory`);
+      const { data } = await axios.get(`${url}/api/inventory`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       setInventory(data);
     } catch (error) {
       setError("Failed to fetch inventory. Please try again.");
@@ -35,7 +41,11 @@ const Replenishment = () => {
 
   const fetchReplenishments = async () => {
     try {
-      const { data } = await axios.get(`${url}/api/replenishment`);
+      const { data } = await axios.get(`${url}/api/replenishment`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       setReplenishments(data);
       setFilteredRequests(data); 
     } catch (error) {
@@ -46,7 +56,11 @@ const Replenishment = () => {
   const handleAddRequest = async (formData) => {
     try {
       console.log("Submitting Replenishment Request:", formData); 
-      await axios.post(`${url}/api/replenishment`, formData);
+      await axios.post(`${url}/api/replenishment`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchReplenishments();
       setShowForm(false);
       toast.success("Replenishment request submitted successfully!");
@@ -58,7 +72,11 @@ const Replenishment = () => {
 
   const handleApproveRequest = async (id) => {
     try {
-      await axios.put(`${url}/api/replenishment/${id}`);
+      await axios.put(`${url}/api/replenishment/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchReplenishments();
       toast.success("Replenishment request approved!");
     } catch (error) {

@@ -20,11 +20,17 @@ const Inventory = () => {
   const [error, setError] = useState(null);
   const { isAdmin, isManager } = useAuth();
 
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
   const fetchInventory = async () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get(`${url}/api/inventory`);
+      const { data } = await axios.get(`${url}/api/inventory`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       setInventory(data);
     } catch (error) {
       setError("Failed to fetch inventory. Please try again.");
@@ -36,7 +42,11 @@ const Inventory = () => {
 
   const fetchSuppliers = async () => {
     try {
-      const { data } = await axios.get(`${url}/api/suppliers`);
+      const { data } = await axios.get(`${url}/api/suppliers`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       setSuppliers(data);
     } catch (error) {
       console.error("Error fetching suppliers:", error);
@@ -45,7 +55,11 @@ const Inventory = () => {
 
   const handleAddItem = async (formData) => {
     try {
-      await axios.post(`${url}/api/inventory`, formData);
+      await axios.post(`${url}/api/inventory`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchInventory();
       setShowForm(false);
       toast.success("Item added successfully!");
@@ -57,7 +71,11 @@ const Inventory = () => {
 
   const handleEditItem = async (id, updatedData) => {
     try {
-      await axios.put(`${url}/api/inventory/${id}`, updatedData);
+      await axios.put(`${url}/api/inventory/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchInventory();
       toast.success("Item updated successfully!");
       setShowForm(false);
@@ -69,7 +87,11 @@ const Inventory = () => {
 
   const handleDeleteItem = async (id) => {
     try {
-      await axios.delete(`${url}/api/inventory/${id}`);
+      await axios.delete(`${url}/api/inventory/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchInventory();
       toast.success("Item deleted successfully!");
     } catch (error) {

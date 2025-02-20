@@ -19,11 +19,17 @@ const Suppliers = () => {
   const [error, setError] = useState(null);
   const { isAdmin, isManager } = useAuth();
 
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
   const fetchSuppliers = async () => {
     setLoading(true);
     setError(null);
     try {
-      const { data } = await axios.get(`${url}/api/suppliers`);
+      const { data } = await axios.get(`${url}/api/suppliers`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       setSuppliers(data);
     } catch (error) {
       setError("Failed to fetch suppliers. Please try again.");
@@ -35,7 +41,11 @@ const Suppliers = () => {
 
   const handleAddSupplier = async (formData) => {
     try {
-      await axios.post(`${url}/api/suppliers`, formData);
+      await axios.post(`${url}/api/suppliers`, formData, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchSuppliers();
       setShowForm(false);
       toast.success("Supplier added successfully!");
@@ -46,7 +56,11 @@ const Suppliers = () => {
 
   const handleEditSupplier = async (id, updatedData) => {
     try {
-      await axios.put(`${url}/api/suppliers/${id}`, updatedData);
+      await axios.put(`${url}/api/suppliers/${id}`, updatedData, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchSuppliers();
       toast.success("Supplier updated successfully!");
       setShowForm(false);
@@ -57,7 +71,11 @@ const Suppliers = () => {
 
   const handleDeleteSupplier = async (id) => {
     try {
-      await axios.delete(`${url}/api/suppliers/${id}`);
+      await axios.delete(`${url}/api/suppliers/${id}`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchSuppliers();
       toast.success("Supplier deleted successfully!");
     } catch (error) {

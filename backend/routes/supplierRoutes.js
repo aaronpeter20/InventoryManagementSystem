@@ -9,7 +9,7 @@ import { protect, manager } from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.route("/").get(getSuppliers).post(protect, manager, addSupplier);
+router.route("/").get(protect,getSuppliers).post(protect, manager, addSupplier);
 router.route("/:id").put(protect, manager, updateSupplier).delete(protect, manager, deleteSupplier);
 
 export default router;
