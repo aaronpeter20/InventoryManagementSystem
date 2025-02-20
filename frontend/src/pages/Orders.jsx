@@ -17,12 +17,13 @@ const Orders = () => {
   const [filteredOrders, setFilteredOrders] = useState([]);
   const { user,isEmployee, isManager } = useAuth();
 
+  const [token, setToken] = useState(localStorage.getItem("token"));
+
   const fetchOrders = async () => {
     try {
-      const token = localStorage.getItem("token"); // Get the token from localStorage
       const { data } = await axios.get(`${url}/api/orders`, {
         headers: {
-          Authorization: `Bearer ${token}`, // Send the token in the Authorization header
+          Authorization: `Bearer ${token}`, 
         },
       });
   
@@ -38,7 +39,11 @@ const Orders = () => {
 
   const fetchInventoryItems = async () => {
     try {
-      const { data } = await axios.get(`${url}/api/inventory`);
+      const { data } = await axios.get(`${url}/api/inventory`, {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       setInventoryItems(data);
     } catch (error) {
       console.error("Error fetching inventory items:", error);
@@ -47,7 +52,11 @@ const Orders = () => {
 
   const handleCreateOrder = async (formData) => {
     try {
-      await axios.post(`${url}/api/orders`, formData);
+      await axios.post(`${url}/api/orders`, formData , {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchOrders();
       setShowForm(false);
       toast.success("Order created successfully!");
@@ -59,7 +68,11 @@ const Orders = () => {
 
   const handleUpdateOrderStatus = async (orderId, status) => {
     try {
-      const response = await axios.put(`${url}/api/orders/${orderId}`, { status });
+      const response = await axios.put(`${url}/api/orders/${orderId}`, { status } , {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
 
       if (response.data.error) {
         window.alert("⚠️ Out of stock! Cannot approve this order."); 
@@ -78,7 +91,11 @@ const Orders = () => {
 
   const handleDeleteOrder = async (orderId) => {
     try {
-      await axios.delete(`${url}/api/orders/${orderId}`);
+      await axios.delete(`${url}/api/orders/${orderId}` , {
+        headers: {
+          Authorization: `Bearer ${token}`, 
+        },
+      });
       fetchOrders();
       toast.success("Order deleted successfully!");
     } catch (error) {
