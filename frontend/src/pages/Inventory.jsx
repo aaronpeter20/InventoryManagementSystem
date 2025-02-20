@@ -13,22 +13,24 @@ const url = "https://inventorymanagementsystem-backend-z88f.onrender.com";
 const Inventory = () => {
   const [inventory, setInventory] = useState([]);
   const [suppliers, setSuppliers] = useState([]);
-  const [searchQuery, setSearchQuery] = useState(""); 
+  const [searchQuery, setSearchQuery] = useState("");
   const [showSearch, setShowSearch] = useState(false);
   const [showForm, setShowForm] = useState(false);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const { isAdmin, isManager } = useAuth();
 
+  // Store the token in a state variable
   const [token, setToken] = useState(localStorage.getItem("token"));
 
+  // Fetch inventory items
   const fetchInventory = async () => {
     setLoading(true);
     setError(null);
     try {
       const { data } = await axios.get(`${url}/api/inventory`, {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`, // Use the token from state
         },
       });
       setInventory(data);
@@ -40,11 +42,12 @@ const Inventory = () => {
     }
   };
 
+  // Fetch suppliers
   const fetchSuppliers = async () => {
     try {
       const { data } = await axios.get(`${url}/api/suppliers`, {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`, // Use the token from state
         },
       });
       setSuppliers(data);
@@ -53,14 +56,15 @@ const Inventory = () => {
     }
   };
 
+  // Add a new inventory item
   const handleAddItem = async (formData) => {
     try {
       await axios.post(`${url}/api/inventory`, formData, {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`, // Use the token from state
         },
       });
-      fetchInventory();
+      fetchInventory(); // Refresh the inventory list
       setShowForm(false);
       toast.success("Item added successfully!");
     } catch (error) {
@@ -69,14 +73,15 @@ const Inventory = () => {
     }
   };
 
+  // Edit an inventory item
   const handleEditItem = async (id, updatedData) => {
     try {
       await axios.put(`${url}/api/inventory/${id}`, updatedData, {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`, // Use the token from state
         },
       });
-      fetchInventory();
+      fetchInventory(); // Refresh the inventory list
       toast.success("Item updated successfully!");
       setShowForm(false);
     } catch (error) {
@@ -85,14 +90,15 @@ const Inventory = () => {
     }
   };
 
+  // Delete an inventory item
   const handleDeleteItem = async (id) => {
     try {
       await axios.delete(`${url}/api/inventory/${id}`, {
         headers: {
-          Authorization: `Bearer ${token}`, 
+          Authorization: `Bearer ${token}`, // Use the token from state
         },
       });
-      fetchInventory();
+      fetchInventory(); // Refresh the inventory list
       toast.success("Item deleted successfully!");
     } catch (error) {
       console.error("Error deleting item:", error.response?.data);
@@ -100,14 +106,16 @@ const Inventory = () => {
     }
   };
 
+  // Filter inventory items based on search query
   const filteredInventory = inventory.filter((item) =>
     item.name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
+  // Fetch inventory and suppliers on component mount
   useEffect(() => {
     fetchInventory();
     fetchSuppliers();
-  }, []);
+  }, [token]); // Re-fetch if the token changes
 
   return (
     <div
@@ -116,8 +124,8 @@ const Inventory = () => {
     >
       <h1 className="text-3xl font-bold mb-4 text-white">Inventory</h1>
 
-       <div className="relative mb-4 flex items-center">
-  
+      {/* Search bar */}
+      <div className="relative mb-4 flex items-center">
         <motion.button
           initial={{ width: "40px" }}
           animate={{ width: showSearch ? "300px" : "40px" }}
@@ -136,17 +144,18 @@ const Inventory = () => {
               className="p-2 w-full outline-none bg-transparent"
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              onBlur={() => setShowSearch(false)} 
+              onBlur={() => setShowSearch(false)}
               autoFocus
             />
           )}
         </motion.button>
       </div>
 
-
+      {/* Loading and error messages */}
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error}</p>}
 
+      {/* Inventory table */}
       <motion.div
         initial={{ opacity: 0, y: 20 }}
         animate={{ opacity: 1, y: 0 }}
@@ -179,7 +188,7 @@ const Inventory = () => {
                 {(isAdmin() || isManager()) && (
                   <td className="p-3">
                     <div className="flex space-x-2">
-                  
+                      {/* Edit button */}
                       <button
                         onClick={() => {
                           setShowForm({ mode: "edit", item });
@@ -189,6 +198,7 @@ const Inventory = () => {
                         <FontAwesomeIcon icon={faEdit} />
                       </button>
 
+                      {/* Delete button */}
                       <button
                         onClick={() => handleDeleteItem(item._id)}
                         className="p-2 bg-red-500 text-white rounded hover:bg-red-600 transition"
@@ -204,6 +214,7 @@ const Inventory = () => {
         </table>
       </motion.div>
 
+      {/* Add Item button */}
       {(isAdmin() || isManager()) && (
         <motion.button
           initial={{ opacity: 0, y: 20 }}
@@ -216,6 +227,7 @@ const Inventory = () => {
         </motion.button>
       )}
 
+      {/* Inventory form modal */}
       {showForm && (
         <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center">
           <motion.div
